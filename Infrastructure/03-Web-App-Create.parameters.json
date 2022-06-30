@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "demo-web-app-dmc"
+        },
+        "location": {
+            "value": "australiaeast"
+        },
+        "hostingPlanName": {
+            "value": "demo-app-plan"
+        },
+        "serverFarmResourceGroup": {
+            "value": "Testing"
+        },
+        "alwaysOn": {
+            "value": false
+        },
+        "currentStack": {
+            "value": "dotnet6"
+        },
+        "phpVersion": {
+            "value": "OFF"
+        }
+    }
+}

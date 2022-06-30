@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion":"1.0.0.0",
+    "parameters":{
+        "name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the resource group",
+                "displayName": "Resource Group Name",
+                "sampleValue": "myResourceGroup"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the resource group",
+                "displayName": "Location",
+                "sampleValue": "westus"
+            }
+        },
+        "sku": {
+            "type": "string",
+            "metadata": {
+                "description": "The SKU of the resource group",
+                "displayName": "SKU",
+                "sampleValue": "Standard"
+            }
+        },
+        "skuCode": {
+            "type": "string",
+            "metadata": {
+                "description": "The SKU code of the resource group",
+                "displayName": "SKU Code",
+                "sampleValue": "S1"
+            }
+        },
+        "osType": {
+            "type": "string",
+            "metadata": {
+                "description": "The OS type of the resource group",
+                "displayName": "OS Type",
+                "sampleValue": "linux"
+            },
+            "allowedValues":[
+                "linux",
+                "windows"
+            ]
+        }
+    },
+    "resources":[
+        {
+            "type":"Microsoft.Web/serverfarms",
+            "apiVersion":"2021-02-01",
+            "name":"[parameters('name')]",
+            "location":"[parameters('location')]",
+            "kind":"[parameters('osType')]",
+            "properties":{
+                "name":"[parameters('name')]",
+                "reserverd":false
+            },
+            "sku":{
+                "name":"[parameters('skuCode')]",
+                "tier":"[parameters('sku')]"
+            }
+        }
+    ]
+}

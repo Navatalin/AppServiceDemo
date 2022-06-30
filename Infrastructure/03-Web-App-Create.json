@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters":{
+        "name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of web app."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the web app."
+            }
+        },
+        "hostingPlanName":{
+            "type": "string",
+            "metadata": {
+                "description": "The name of hosting plan."
+            }
+        },
+        "serverFarmResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group of server farm."
+            }
+        },
+        "alwaysOn": {
+            "type": "bool",
+            "metadata": {
+                "description": "Whether the web app is always on."
+            }
+        },
+        "currentStack": {
+            "type": "string",
+            "metadata": {
+                "description": "The current stack of web app."
+            }
+        },
+        "phpVersion": {
+            "type": "string",
+            "metadata": {
+                "description": "The version of PHP."
+            }
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-08-01",
+            "name": "[parameters('name')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "properties": {
+                "name":"[parameters('name')]",
+                "siteConfig":{
+                    "metadata":[
+                        {
+                        "name":"CURRENT_STACK",
+                        "value":"[parameters('currentStack')]"
+                        }
+                    ],
+                    "phpVersion":"[parameters('phpVersion')]",
+                    "alwaysOn":"[parameters('alwaysOn')]"
+                },
+                "serverFarmId":"[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+                "clientAffinityEnabled":true
+            }
+        }
+    ]
+}
