@@ -24,9 +24,9 @@ jobs:
         run: dotnet build AppServiceDemo.csproj -c Release --no-restore
       - name: Create Publish Folder
         run: |
-          mkdir '${{ AZURE_WEBAPP_PATH }}/build'
+          mkdir '${{ env.AZURE_WEBAPP_PATH }}/build'
       - name: Publish
-        run: dotnet publish AppServiceDemo.csproj -c Release -o '${{ AZURE_WEBAPP_PATH }}/build'
+        run: dotnet publish AppServiceDemo.csproj -c Release -o '${{ env.AZURE_WEBAPP_PATH }}/build'
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -35,7 +35,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: '${{ AZURE_WEBAPP_PATH }}/build'
+          package: '${{ env.AZURE_WEBAPP_PATH }}/build'
       - name: Azure Logout
         run: |
           az logout
