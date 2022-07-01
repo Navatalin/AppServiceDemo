@@ -24,9 +24,9 @@ jobs:
         run: dotnet build AppServiceDemo.csproj -c Release --no-restore
       - name: Create Publish Folder
         run: |
-          mkdir "${{ AZURE_WEBAPP_PATH }}/build"
+          mkdir '${{ AZURE_WEBAPP_PATH }}/build'
       - name: Publish
-        run: dotnet publish AppServiceDemo.csproj -c Release -o "${{ AZURE_WEBAPP_PATH }}/build"
+        run: dotnet publish AppServiceDemo.csproj -c Release -o '${{ AZURE_WEBAPP_PATH }}/build'
       - name: Azure Login
         uses: azure/login@v1
         with:
