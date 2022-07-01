@@ -7,6 +7,7 @@ on:
     branches: [ main ]
 env:
   AZURE_WEBAPP_NAME: demo-web-app-dmc
+  AZURE_WEBAPP_PATH: '.'
 jobs:
   build:
     name: Build and Publish
@@ -23,9 +24,9 @@ jobs:
         run: dotnet build AppServiceDemo.csproj -c Release --no-restore
       - name: Create Publish Folder
         run: |
-          mkdir "$GITHUB_WORKSPACE/build"
+          mkdir "${{ AZURE_WEBAPP_PATH }}/build"
       - name: Publish
-        run: dotnet publish AppServiceDemo.csproj -c Release -o "$GITHUB_WORKSPACE/build"
+        run: dotnet publish AppServiceDemo.csproj -c Release -o "${{ AZURE_WEBAPP_PATH }}/build"
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -34,7 +35,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: "$GITHUB_WORKSPACE/build"
+          package: '${{ AZURE_WEBAPP_PATH }}/build'
       - name: Azure Logout
         run: |
           az logout
