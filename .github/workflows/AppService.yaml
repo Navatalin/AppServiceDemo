@@ -23,6 +23,7 @@ jobs:
         run: dotnet build AppServiceDemo.csproj -c Release --no-restore
       - name: Create Publish Folder
         run: |
+          mkdir "$GITHUB_WORKSPACE/artifacts"
           mkdir "$GITHUB_WORKSPACE/artifacts/AppServiceDemo"
       - name: Publish
         run: dotnet publish AppServiceDemo.csproj -c Release -o "$GITHUB_WORKSPACE/artifacts/AppServiceDemo"
