@@ -1,0 +1,40 @@
+name: AppService
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+    branches: [ main ]
+env:
+  AZURE_WEBAPP_NAME: demo-web-app-dmc
+jobs:
+  build:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Environment
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore
+        run: dotnet restore AppServiceDemo.csproj
+      - name: Build
+        run: dotnet build AppServiceDemo.csproj -c Release --no-restore
+      - name: Create Publish Folder
+        run: |
+          mkdir "$GITHUB_WORKSPACE/artifacts/AppServiceDemo"
+      - name: Publish
+        run: dotnet publish AppServiceDemo.csproj -c Release -o "$GITHUB_WORKSPACE/artifacts/AppServiceDemo"
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Deploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: "$GITHUB_WORKSPACE/artifacts/AppServiceDemo"
+      - name: Azure Logout
+        run: |
+          az logout
